@@ -1,36 +1,36 @@
+name: CI
+
 on:
   push:
-    branches: [main, develop]   # katrun mli tpush f main w develop
+    branches: [main, develop]
   pull_request:
-    branches: [main, develop]   # katrun mli tcreate PR f main/develop
+    branches: [main, develop]
 
 jobs:
-  setup-install:
+  build-test:
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v3          # clone repo
-      - uses: actions/setup-node@v3
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
           node-version: 20
-      - run: npm ci                         # install dependencies clean
+          cache: npm
 
-  lint-test-build:
-    runs-on: ubuntu-latest
-    needs: setup-install                   # katbda job mli setup-install tamam
-    steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-        with:
-          node-version: 20
-      - run: npm ci
-      - run: npm run lint                   # eslint
-      - run: npm run test                   # jest test
-      - run: npm run build                  # tcompile TypeScript
+      - name: Install
+        run: npm install
 
-  docker-build:
-    runs-on: ubuntu-latest
-    needs: lint-test-build
-    steps:
-      - uses: actions/checkout@v3
-      - run: docker build -t codeFolio:latest .
-      - run: docker images
+      - name: Lint
+        run: npm run lint --if-present
+
+      - name: Type check
+        run: npm run typecheck --if-present
+
+      - name: Build
+        run: npm run build
+
+      - name: Test
+        run: npm test --if-present

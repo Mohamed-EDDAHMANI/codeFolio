@@ -1,0 +1,39 @@
+# Node
+node_modules/
+.npmrc
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# TypeScript build output
+/dist/
+/coverage/
+/.nyc_output/
+
+# Env & secrets
+.env
+.env.*
+!.env.example
+
+# Logs
+logs/
+*.log
+
+# Editor & OS
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/*
+!.vscode/extensions.json
+
+# Misc caches
+.turbo/
+.vercel/
+
+# Prisma
+prisma/*.db-journal
+prisma/*.sqlite
+
+# Docker artefacts (not source)
+.docker/

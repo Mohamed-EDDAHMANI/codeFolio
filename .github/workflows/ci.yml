@@ -1,0 +1,36 @@
+on:
+  push:
+    branches: [main, develop]   # katrun mli tpush f main w develop
+  pull_request:
+    branches: [main, develop]   # katrun mli tcreate PR f main/develop
+
+jobs:
+  setup-install:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3          # clone repo
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 20
+      - run: npm ci                         # install dependencies clean
+
+  lint-test-build:
+    runs-on: ubuntu-latest
+    needs: setup-install                   # katbda job mli setup-install tamam
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 20
+      - run: npm ci
+      - run: npm run lint                   # eslint
+      - run: npm run test                   # jest test
+      - run: npm run build                  # tcompile TypeScript
+
+  docker-build:
+    runs-on: ubuntu-latest
+    needs: lint-test-build
+    steps:
+      - uses: actions/checkout@v3
+      - run: docker build -t codeFolio:latest .
+      - run: docker images

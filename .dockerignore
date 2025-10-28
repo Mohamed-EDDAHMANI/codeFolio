@@ -1,0 +1,30 @@
+# Exclude VCS and editor junk
+git/
+.git/
+.github/
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Node & build output
+node_modules/
+dist/
+coverage/
+.nyc_output/
+
+# Env files
+.env
+.env.*
+
+# Logs
+logs/
+*.log
+
+# Docker files themselves (not needed inside image)
+Dockerfile
+docker-compose.yml
+
+# Prisma local files
+prisma/*.sqlite
+prisma/*.db-journal

@@ -1,4 +1,5 @@
 import { UserModel } from '../../models/user.model.js';
+import { hashPassword } from '../../utils/auth.js';
 
 export default {
   Query: {
@@ -10,9 +11,15 @@ export default {
       _: any,
       { input }: { input: { nom: string; prenom: string; email: string; password: string; image?: string; dateNaissance?: Date; caver?: string; adress?: string; biographie?: string } }
     ) => {
+      if (input.password) {
+        input.password = await hashPassword(input.password);
+      }
       const newUser = new UserModel(input);
       await newUser.save();
-      return newUser.toObject();
+      const obj = newUser.toObject();
+      // never return password
+      if ((obj as any).password) delete (obj as any).password;
+      return obj;
     },
     updateUser: async (_: any, { id, input }: { id: string; input: any }) => {
       return await UserModel.findByIdAndUpdate(id, input, { new: true }).lean();

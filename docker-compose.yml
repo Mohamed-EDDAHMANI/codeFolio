@@ -4,15 +4,19 @@ services:
   app:
     build: .
     container_name: codefolio_app
+    command: npm run dev
     ports:
       - "4000:4000"
     env_file:
       - .env
     environment:
       - MONGO_URI=mongodb://mongo:27017/codeFolioDB
+      - CHOKIDAR_USEPOLLING=true
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
     depends_on:
       - mongo
-    command: npm run dev
 
   mongo:
     image: mongo:7
@@ -23,6 +27,8 @@ services:
       MONGO_INITDB_DATABASE: codefolioDB
     volumes:
       - mongo_data:/data/db
+    command: ["--quiet", "--logpath", "/dev/null"]
+
 
 volumes:
   mongo_data:

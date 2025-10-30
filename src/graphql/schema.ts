@@ -8,6 +8,7 @@ import projetTypeDefs from './projet.schema.js';
 import formationTypeDefs from './formation.schema.js';
 import documentTypeDefs from './document.schema.js';
 import visitorTypeDefs from './visitor.schema.js';
+import authTypeDefs from './auth.schema.js';
 
 export const typeDefs = gql`
   ${baseTypeDefs}
@@ -19,4 +20,5 @@ export const typeDefs = gql`
   ${formationTypeDefs}
   ${documentTypeDefs}
   ${visitorTypeDefs}
+  ${authTypeDefs}
 `;

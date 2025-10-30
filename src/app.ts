@@ -5,6 +5,7 @@ import { ApolloServer, HeaderMap } from '@apollo/server';
 import type { Request, Response } from 'express';
 import { typeDefs } from './graphql/schema.js';
 import { resolvers } from './graphql/resolvers/index.js';
+import morgan from 'morgan';
 
 const app = express();
 app.use(cors());
@@ -16,6 +17,8 @@ const server = new ApolloServer({ typeDefs, resolvers });
 // Wrap in async function to start Apollo
 export const createApp = async () => {
   await server.start();
+
+  app.use(morgan('dev'));
 
   app.all('/graphql', async (req: Request, res: Response) => {
     const headers = new HeaderMap();

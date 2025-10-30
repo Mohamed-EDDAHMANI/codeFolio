@@ -7,6 +7,7 @@ import projetResolvers from './projet.resolver.js';
 import formationResolvers from './formation.resolver.js';
 import documentResolvers from './document.resolver.js';
 import visitorResolvers from './visitor.resolver.js';
+import authResolvers from './auth.resolver.js';
 
 // Simple ISO Date scalar
 const DateScalar = new GraphQLScalarType({
@@ -36,4 +37,5 @@ export const resolvers = [
 	formationResolvers,
 	documentResolvers,
 	visitorResolvers,
+		authResolvers,
 ];

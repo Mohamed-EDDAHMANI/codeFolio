@@ -33,7 +33,7 @@ export const createApp = async () => {
         if (token) {
             try {
                 currentUser = await verifyToken(token);
-            } catch (e) {
+            } catch {
                 // ignore verification errors here — keep context null so login is allowed
                 currentUser = null;
             }

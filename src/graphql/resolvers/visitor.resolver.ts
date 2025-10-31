@@ -6,13 +6,13 @@ export default {
       const { limit = 50, skip = 0 } = args || {};
       return await VisitorModel.find().sort({ visit_time: -1 }).skip(skip).limit(limit).lean();
     },
-    visitor: async (_: any, { id }: { id: string }) => await VisitorModel.findById(id).lean(),
+  visitor: async (_: any, { _id }: { _id: string }) => await VisitorModel.findById(_id).lean(),
   },
   Mutation: {
     createVisitor: async (_: any, { input }: { input: any }) => {
       const doc = await VisitorModel.create(input);
       return doc.toObject();
     },
-    deleteVisitor: async (_: any, { id }: { id: string }) => !!(await VisitorModel.findByIdAndDelete(id)),
+  deleteVisitor: async (_: any, { _id }: { _id: string }) => !!(await VisitorModel.findByIdAndDelete(_id)),
   },
 };

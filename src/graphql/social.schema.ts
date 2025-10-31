@@ -1,6 +1,6 @@
 export default `
   type Social {
-    id: ID!
+    _id: ID!
     nom: String!
     liensSociaux: String!
     icon: String
@@ -11,7 +11,7 @@ export default `
 
   extend type Query {
     socials(userId: ID): [Social!]!
-    social(id: ID!): Social
+    social(_id: ID!): Social
   }
 
   input CreateSocialInput {
@@ -29,7 +29,7 @@ export default `
 
   extend type Mutation {
     createSocial(input: CreateSocialInput!): Social!
-    updateSocial(id: ID!, input: UpdateSocialInput!): Social
-    deleteSocial(id: ID!): Boolean!
+    updateSocial(_id: ID!, input: UpdateSocialInput!): Social
+    deleteSocial(_id: ID!): Boolean!
   }
 `;

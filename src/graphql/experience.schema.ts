@@ -1,6 +1,6 @@
 export default `
   type Experience {
-    id: ID!
+    _id: ID!
     poste: String!
     entreprise: String!
     dateDubee: Date
@@ -13,7 +13,7 @@ export default `
 
   extend type Query {
     experiences(userId: ID): [Experience!]!
-    experience(id: ID!): Experience
+    experience(_id: ID!): Experience
   }
 
   input CreateExperienceInput {
@@ -35,7 +35,7 @@ export default `
 
   extend type Mutation {
     createExperience(input: CreateExperienceInput!): Experience!
-    updateExperience(id: ID!, input: UpdateExperienceInput!): Experience
-    deleteExperience(id: ID!): Boolean!
+    updateExperience(_id: ID!, input: UpdateExperienceInput!): Experience
+    deleteExperience(_id: ID!): Boolean!
   }
 `;

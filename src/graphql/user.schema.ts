@@ -2,7 +2,7 @@ export default `
   scalar Date
 
   type User {
-    id: ID!
+    _id: ID!
     nom: String!
     prenom: String!
     email: String!
@@ -17,7 +17,7 @@ export default `
 
   extend type Query {
     users: [User!]!
-    user(id: ID!): User
+    user(_id: ID!): User
   }
 
   input CreateUserInput {
@@ -46,7 +46,7 @@ export default `
 
   extend type Mutation {
     createUser(input: CreateUserInput!): User!
-    updateUser(id: ID!, input: UpdateUserInput!): User
-    deleteUser(id: ID!): Boolean!
+    updateUser(_id: ID!, input: UpdateUserInput!): User
+    deleteUser(_id: ID!): Boolean!
   }
 `;

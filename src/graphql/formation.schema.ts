@@ -1,6 +1,6 @@
 export default `
   type Formation {
-    id: ID!
+    _id: ID!
     filiere: String!
     ecole: String!
     localisation: String
@@ -14,7 +14,7 @@ export default `
 
   extend type Query {
     formations(userId: ID): [Formation!]!
-    formation(id: ID!): Formation
+    formation(_id: ID!): Formation
   }
 
   input CreateFormationInput {
@@ -38,7 +38,7 @@ export default `
 
   extend type Mutation {
     createFormation(input: CreateFormationInput!): Formation!
-    updateFormation(id: ID!, input: UpdateFormationInput!): Formation
-    deleteFormation(id: ID!): Boolean!
+    updateFormation(_id: ID!, input: UpdateFormationInput!): Formation
+    deleteFormation(_id: ID!): Boolean!
   }
 `;

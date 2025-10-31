@@ -1,6 +1,6 @@
 export default `
   type Visitor {
-    id: ID
+    _id: ID
     ip_address: String
     country: String
     city: String
@@ -20,7 +20,7 @@ export default `
 
   extend type Query {
     visitors(limit: Int, skip: Int): [Visitor!]!
-    visitor(id: ID!): Visitor
+    visitor(_id: ID!): Visitor
   }
 
   input CreateVisitorInput {
@@ -41,6 +41,6 @@ export default `
 
   extend type Mutation {
     createVisitor(input: CreateVisitorInput!): Visitor!
-    deleteVisitor(id: ID!): Boolean!
+    deleteVisitor(_id: ID!): Boolean!
   }
 `;

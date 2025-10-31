@@ -1,6 +1,6 @@
 export default `
   type Projet {
-    id: ID!
+    _id: ID!
     titre: String!
     description: String
     urlGit: String
@@ -13,7 +13,7 @@ export default `
 
   extend type Query {
     projets: [Projet!]!
-    projet(id: ID!): Projet
+    projet(_id: ID!): Projet
   }
 
   input CreateProjetInput {
@@ -33,10 +33,10 @@ export default `
     image: String
     competences: [ID!]
   }
-
+  
   extend type Mutation {
     createProjet(input: CreateProjetInput!): Projet!
-    updateProjet(id: ID!, input: UpdateProjetInput!): Projet
-    deleteProjet(id: ID!): Boolean!
+    updateProjet(_id: ID!, input: UpdateProjetInput!): Projet
+    deleteProjet(_id: ID!): Boolean!
   }
 `;

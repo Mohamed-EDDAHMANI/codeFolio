@@ -1,6 +1,6 @@
 export default `
   type Document {
-    id: ID!
+    _id: ID!
     nom: String!
     urlStocket: String!
     userId: ID!
@@ -10,7 +10,7 @@ export default `
 
   extend type Query {
     documents(userId: ID): [Document!]!
-    document(id: ID!): Document
+    document(_id: ID!): Document
   }
 
   input CreateDocumentInput {
@@ -26,7 +26,7 @@ export default `
 
   extend type Mutation {
     createDocument(input: CreateDocumentInput!): Document!
-    updateDocument(id: ID!, input: UpdateDocumentInput!): Document
-    deleteDocument(id: ID!): Boolean!
+    updateDocument(_id: ID!, input: UpdateDocumentInput!): Document
+    deleteDocument(_id: ID!): Boolean!
   }
 `;

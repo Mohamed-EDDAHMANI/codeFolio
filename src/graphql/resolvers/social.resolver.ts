@@ -6,15 +6,15 @@ export default {
       if (args.userId) return await SocialModel.find({ userId: args.userId }).lean();
       return await SocialModel.find().lean();
     },
-    social: async (_: any, { id }: { id: string }) => await SocialModel.findById(id).lean(),
+  social: async (_: any, { _id }: { _id: string }) => await SocialModel.findById(_id).lean(),
   },
   Mutation: {
     createSocial: async (_: any, { input }: { input: any }) => {
       const doc = await SocialModel.create(input);
       return doc.toObject();
     },
-    updateSocial: async (_: any, { id, input }: { id: string; input: any }) =>
-      await SocialModel.findByIdAndUpdate(id, input, { new: true }).lean(),
-    deleteSocial: async (_: any, { id }: { id: string }) => !!(await SocialModel.findByIdAndDelete(id)),
+    updateSocial: async (_: any, { _id, input }: { _id: string; input: any }) =>
+      await SocialModel.findByIdAndUpdate(_id, input, { new: true }).lean(),
+    deleteSocial: async (_: any, { _id }: { _id: string }) => !!(await SocialModel.findByIdAndDelete(_id)),
   },
 };

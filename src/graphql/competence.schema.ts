@@ -1,6 +1,6 @@
 export default `
   type Competence {
-    id: ID!
+    _id: ID!
     nom: String!
     categorie: String!
     userId: ID!
@@ -10,7 +10,7 @@ export default `
 
   extend type Query {
     competences(userId: ID): [Competence!]!
-    competence(id: ID!): Competence
+    competence(_id: ID!): Competence
   }
 
   input CreateCompetenceInput {
@@ -23,10 +23,10 @@ export default `
     nom: String
     categorie: String
   }
-
+  
   extend type Mutation {
     createCompetence(input: CreateCompetenceInput!): Competence!
-    updateCompetence(id: ID!, input: UpdateCompetenceInput!): Competence
-    deleteCompetence(id: ID!): Boolean!
+    updateCompetence(_id: ID!, input: UpdateCompetenceInput!): Competence
+    deleteCompetence(_id: ID!): Boolean!
   }
 `;

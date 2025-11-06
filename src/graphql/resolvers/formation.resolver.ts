@@ -1,4 +1,5 @@
 import { FormationModel } from '../../models/formation.model.js';
+import { GraphQLError } from 'graphql';
 
 export default {
   Query: {
@@ -6,7 +7,13 @@ export default {
       if (args.userId) return await FormationModel.find({ userId: args.userId }).lean();
       return await FormationModel.find().lean();
     },
-  formation: async (_: any, { _id }: { _id: string }) => await FormationModel.findById(_id).lean(),
+    formation: async (_: any, { _id }: { _id: string }) => {
+      const doc = await FormationModel.findById(_id).lean();
+      if (!doc) {
+        throw new GraphQLError('Formation not found', { extensions: { code: 'FORMATION_NOT_FOUND' } });
+      }
+      return doc;
+    },
   },
   Mutation: {
     createFormation: async (_: any, { input }: { input: any }) => {

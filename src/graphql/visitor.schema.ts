@@ -41,6 +41,7 @@ export default `
 
   extend type Mutation {
     createVisitor(input: CreateVisitorInput!): Visitor!
+    updateVisitorSession(_id: ID!, pages_visited: [String!], session_duration: Int): Visitor
     deleteVisitor(_id: ID!): Boolean!
   }
 `;

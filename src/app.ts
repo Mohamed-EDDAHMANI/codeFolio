@@ -6,6 +6,7 @@ import type { Request, Response } from 'express';
 import { typeDefs } from './graphql/schema.js';
 import { resolvers } from './graphql/resolvers/index.js';
 import { verifyToken } from './utils/auth.js';
+import { trackVisitor } from './middlewares/visitor.js';
 
 const app = express();
 app.use(cors());
@@ -18,6 +19,8 @@ export const createApp = async () => {
     await server.start();
 
     app.all('/graphql', async (req: Request, res: Response) => {
+        // Track visitor info
+        await trackVisitor(req);
         const headers = new HeaderMap();
         for (const [key, value] of Object.entries(req.headers)) {
             if (Array.isArray(value)) headers.set(key, value.join(','));

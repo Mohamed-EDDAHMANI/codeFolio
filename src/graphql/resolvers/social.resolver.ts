@@ -1,4 +1,5 @@
 import { SocialModel } from '../../models/social.model.js';
+import { GraphQLError } from 'graphql';
 
 export default {
   Query: {
@@ -6,7 +7,13 @@ export default {
       if (args.userId) return await SocialModel.find({ userId: args.userId }).lean();
       return await SocialModel.find().lean();
     },
-  social: async (_: any, { _id }: { _id: string }) => await SocialModel.findById(_id).lean(),
+    social: async (_: any, { _id }: { _id: string }) => {
+      const doc = await SocialModel.findById(_id).lean();
+      if (!doc) {
+        throw new GraphQLError('Social not found', { extensions: { code: 'SOCIAL_NOT_FOUND' } });
+      }
+      return doc;
+    },
   },
   Mutation: {
     createSocial: async (_: any, { input }: { input: any }) => {

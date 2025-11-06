@@ -1,0 +1,294 @@
+{
+  "api": {
+    "name": "CodeFolio GraphQL API",
+    "endpoint": "/graphql",
+    "protocol": "GraphQL",
+    "description": "Single GraphQL endpoint for CodeFolio backend. All requests are POSTs to the `/graphql` endpoint with a JSON body: { \"query\": string, \"variables\": object }",
+    "operations": [
+      {
+        "name": "users",
+        "type": "query",
+        "description": "Fetch all users",
+        "exampleRequest": {
+          "query": "query Users { users { _id nom prenom email image dateNaissance caver adress biographie createdAt updatedAt } }",
+          "variables": {}
+        },
+        "exampleResponse": {
+          "data": {
+            "users": [
+              {
+                "_id": "60f5a3...",
+                "nom": "Doe",
+                "prenom": "John",
+                "email": "john@example.com",
+                "image": "https://...",
+                "dateNaissance": "1990-01-01T00:00:00.000Z",
+                "caver": "https://...",
+                "adress": "123 Main St",
+                "biographie": "...",
+                "createdAt": "2024-01-01T00:00:00.000Z",
+                "updatedAt": "2024-01-02T00:00:00.000Z"
+              }
+            ]
+          },
+          "errors": null
+        }
+      },
+      {
+        "name": "user",
+        "type": "query",
+        "description": "Fetch a single user by _id",
+        "exampleRequest": {
+          "query": "query User($id: ID!) { user(_id: $id) { _id nom prenom email } }",
+          "variables": { "id": "60f5a3..." }
+        },
+        "exampleResponse": {
+          "data": { "user": { "_id": "60f5a3...", "nom": "Doe", "prenom": "John", "email": "john@example.com" } },
+          "errors": null
+        }
+      },
+      {
+        "name": "createUser",
+        "type": "mutation",
+        "description": "Create a new user (password will be hashed)",
+        "exampleRequest": {
+          "query": "mutation CreateUser($input: CreateUserInput!) { createUser(input: $input) { _id nom prenom email } }",
+          "variables": { "input": { "nom": "Doe", "prenom": "John", "email": "john@example.com", "password": "s3cret" } }
+        },
+        "exampleResponse": {
+          "data": { "createUser": { "_id": "60f5a3...", "nom": "Doe", "prenom": "John", "email": "john@example.com" } },
+          "errors": null
+        }
+      },
+      {
+        "name": "updateUser",
+        "type": "mutation",
+        "description": "Update an existing user by _id",
+        "exampleRequest": {
+          "query": "mutation UpdateUser($id: ID!, $input: UpdateUserInput!) { updateUser(_id: $id, input: $input) { _id nom prenom email } }",
+          "variables": { "id": "60f5a3...", "input": { "biographie": "New bio" } }
+        },
+        "exampleResponse": {
+          "data": { "updateUser": { "_id": "60f5a3...", "nom": "Doe", "prenom": "John", "email": "john@example.com" } },
+          "errors": null
+        }
+      },
+      {
+        "name": "deleteUser",
+        "type": "mutation",
+        "description": "Delete a user by _id; returns true on success",
+        "exampleRequest": {
+          "query": "mutation DeleteUser($id: ID!) { deleteUser(_id: $id) }",
+          "variables": { "id": "60f5a3..." }
+        },
+        "exampleResponse": {
+          "data": { "deleteUser": true },
+          "errors": null
+        }
+      },
+
+      {
+        "name": "socials",
+        "type": "query",
+        "description": "List socials, optional filtered by userId",
+        "exampleRequest": {
+          "query": "query Socials($userId: ID) { socials(userId: $userId) { _id nom liensSociaux icon userId createdAt updatedAt } }",
+          "variables": { "userId": null }
+        },
+        "exampleResponse": { "data": { "socials": [] }, "errors": null }
+      },
+      {
+        "name": "social",
+        "type": "query",
+        "description": "Get a social by _id",
+        "exampleRequest": { "query": "query Social($id: ID!) { social(_id: $id) { _id nom liensSociaux } }", "variables": { "id": "..." } },
+        "exampleResponse": { "data": { "social": null }, "errors": null }
+      },
+      {
+        "name": "createSocial",
+        "type": "mutation",
+        "description": "Create a Social entry",
+        "exampleRequest": { "query": "mutation CreateSocial($input: CreateSocialInput!) { createSocial(input: $input) { _id nom liensSociaux userId } }", "variables": { "input": { "nom": "GitHub", "liensSociaux": "https://github.com/user", "userId": "60f5a3..." } } },
+        "exampleResponse": { "data": { "createSocial": { "_id": "...", "nom": "GitHub" } }, "errors": null }
+      },
+
+      {
+        "name": "experiences",
+        "type": "query",
+        "description": "List experiences, optional by userId",
+        "exampleRequest": { "query": "query Experiences($userId: ID) { experiences(userId: $userId) { _id poste entreprise dateDubee dateFinal description userId } }", "variables": { "userId": null } },
+        "exampleResponse": { "data": { "experiences": [] }, "errors": null }
+      },
+      {
+        "name": "experience",
+        "type": "query",
+        "description": "Get an experience by _id",
+        "exampleRequest": { "query": "query Experience($id: ID!) { experience(_id: $id) { _id poste entreprise } }", "variables": { "id": "..." } },
+        "exampleResponse": { "data": { "experience": null }, "errors": null }
+      },
+
+      {
+        "name": "competences",
+        "type": "query",
+        "description": "List competences, optional by userId",
+        "exampleRequest": { "query": "query Competences($userId: ID) { competences(userId: $userId) { _id nom categorie userId } }", "variables": { "userId": null } },
+        "exampleResponse": { "data": { "competences": [] }, "errors": null }
+      },
+
+      {
+        "name": "projets",
+        "type": "query",
+        "description": "List projets",
+        "exampleRequest": { "query": "query Projets { projets { _id titre description urlGit urlDemo image competences createdAt updatedAt } }", "variables": {} },
+        "exampleResponse": { "data": { "projets": [] }, "errors": null }
+      },
+
+      {
+        "name": "formations",
+        "type": "query",
+        "description": "List formations optionally by userId",
+        "exampleRequest": { "query": "query Formations($userId: ID) { formations(userId: $userId) { _id filiere ecole localisation dateDubee dateFinal description userId } }", "variables": { "userId": null } },
+        "exampleResponse": { "data": { "formations": [] }, "errors": null }
+      },
+
+      {
+        "name": "documents",
+        "type": "query",
+        "description": "List documents optionally by userId",
+        "exampleRequest": { "query": "query Documents($userId: ID) { documents(userId: $userId) { _id nom urlStocket userId createdAt updatedAt } }", "variables": { "userId": null } },
+        "exampleResponse": { "data": { "documents": [] }, "errors": null }
+      },
+
+      {
+        "name": "visitors",
+        "type": "query",
+        "description": "List visitors with pagination",
+        "exampleRequest": { "query": "query Visitors($limit: Int, $skip: Int) { visitors(limit: $limit, skip: $skip) { _id ip_address country city isp visit_time pages_visited session_duration } }", "variables": { "limit": 10, "skip": 0 } },
+        "exampleResponse": { "data": { "visitors": [] }, "errors": null }
+      },
+
+      {
+        "name": "login",
+        "type": "mutation",
+        "description": "Authenticate a user and receive an AuthPayload (token + user)",
+        "exampleRequest": { "query": "mutation Login($email: String!, $password: String!) { login(email: $email, password: $password) { token user { _id nom prenom email } } }", "variables": { "email": "john@example.com", "password": "s3cret" } },
+        "exampleResponse": { "data": { "login": { "token": "eyJhbGci...", "user": { "_id": "60f5a3...", "nom": "Doe", "prenom": "John", "email": "john@example.com" } } }, "errors": null }
+      }
+    ],
+    "errorFormat": {
+      "graphqlErrors": [
+        {
+          "message": "string",
+          "locations": [{ "line": 1, "column": 2 }],
+          "path": ["fieldName"],
+          "extensions": { "code": "ERROR_CODE", "exception": {} }
+        }
+      ]
+    }
+  },
+
+  "entities": {
+    "User": {
+      "_id": "ID!",
+      "nom": "String!",
+      "prenom": "String!",
+      "email": "String!",
+      "image": "String",
+      "dateNaissance": "Date",
+      "caver": "String",
+      "adress": "String",
+      "biographie": "String",
+      "createdAt": "Date",
+      "updatedAt": "Date"
+    },
+    "Social": {
+      "_id": "ID!",
+      "nom": "String!",
+      "liensSociaux": "String!",
+      "icon": "String",
+      "userId": "ID!",
+      "createdAt": "Date",
+      "updatedAt": "Date"
+    },
+    "Experience": {
+      "_id": "ID!",
+      "poste": "String!",
+      "entreprise": "String!",
+      "dateDubee": "Date",
+      "dateFinal": "Date",
+      "description": "String",
+      "userId": "ID!",
+      "createdAt": "Date",
+      "updatedAt": "Date"
+    },
+    "Competence": {
+      "_id": "ID!",
+      "nom": "String!",
+      "categorie": "String!",
+      "userId": "ID!",
+      "createdAt": "Date",
+      "updatedAt": "Date"
+    },
+    "Projet": {
+      "_id": "ID!",
+      "titre": "String!",
+      "description": "String",
+      "urlGit": "String",
+      "urlDemo": "String",
+      "image": "String",
+      "competences": "[ID!]",
+      "createdAt": "Date",
+      "updatedAt": "Date"
+    },
+    "Formation": {
+      "_id": "ID!",
+      "filiere": "String!",
+      "ecole": "String!",
+      "localisation": "String",
+      "dateDubee": "Date",
+      "dateFinal": "Date",
+      "description": "String",
+      "userId": "ID!",
+      "createdAt": "Date",
+      "updatedAt": "Date"
+    },
+    "Document": {
+      "_id": "ID!",
+      "nom": "String!",
+      "urlStocket": "String!",
+      "userId": "ID!",
+      "createdAt": "Date",
+      "updatedAt": "Date"
+    },
+    "Visitor": {
+      "_id": "ID",
+      "ip_address": "String",
+      "country": "String",
+      "city": "String",
+      "isp": "String",
+      "user_agent": "String",
+      "referrer": "String",
+      "accept_language": "String",
+      "screen_resolution": "String",
+      "device_type": "String",
+      "timezone": "String",
+      "visit_time": "Date",
+      "pages_visited": "[String!]",
+      "session_duration": "Int",
+      "createdAt": "Date",
+      "updatedAt": "Date"
+    },
+    "AuthPayload": {
+      "token": "String!",
+      "user": "User!"
+    },
+    "Date": "scalar Date (ISO-8601 string)"
+  },
+
+  "notes": {
+    "howToCall": "POST to /graphql with JSON body { \"query\": string, \"variables\": object }. Use Authorization header 'Bearer <token>' for authenticated requests.",
+    "errors": "GraphQL responses include 'errors' array on failures. The 'data' field may be null or partially present depending on errors.",
+    "cookies": "The login mutation can optionally set an HttpOnly cookie from the resolver if the server context exposes the response object. See auth resolver for example.",
+    "generated": "This file was generated from the GraphQL SDL files in src/graphql/*.schema.ts and lists operations and entity fields available in the API. Keep it updated when schemas change."
+  }
+}

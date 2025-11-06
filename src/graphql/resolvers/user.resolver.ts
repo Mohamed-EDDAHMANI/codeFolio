@@ -1,10 +1,17 @@
 import { UserModel } from '../../models/user.model.js';
 import { hashPassword } from '../../utils/auth.js';
+import { GraphQLError } from 'graphql';
 
 export default {
   Query: {
     users: async () => await UserModel.find().lean(),
-    user: async (_: any, { id }: { id: string }) => await UserModel.findById(id).lean(),
+    user: async (_: any, { _id }: { _id: string }) => {
+      const user = await UserModel.findById(_id).lean();
+      if (!user) {
+        throw new GraphQLError('User not found', { extensions: { code: 'USER_NOT_FOUND' } });
+      }
+      return user;
+    },
   },
   Mutation: {
     createUser: async (
@@ -21,12 +28,19 @@ export default {
       if ((obj as any).password) delete (obj as any).password;
       return obj;
     },
-    updateUser: async (_: any, { id, input }: { id: string; input: any }) => {
-      return await UserModel.findByIdAndUpdate(id, input, { new: true }).lean();
+    updateUser: async (_: any, { _id, input }: { _id: string; input: any }) => {
+      const updated = await UserModel.findByIdAndUpdate(_id, input, { new: true }).lean();
+      if (!updated) {
+        throw new GraphQLError('User not found', { extensions: { code: 'USER_NOT_FOUND' } });
+      }
+      return updated;
     },
-    deleteUser: async (_: any, { id }: { id: string }) => {
-      const res = await UserModel.findByIdAndDelete(id);
-      return !!res;
+    deleteUser: async (_: any, { _id }: { _id: string }) => {
+      const res = await UserModel.findByIdAndDelete(_id);
+      if (!res) {
+        throw new GraphQLError('User not found', { extensions: { code: 'USER_NOT_FOUND' } });
+      }
+      return true;
     },
   },
 };

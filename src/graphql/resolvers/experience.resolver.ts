@@ -1,4 +1,5 @@
 import { ExperienceModel } from '../../models/experience.model.js';
+import { GraphQLError } from 'graphql';
 
 export default {
   Query: {
@@ -6,7 +7,13 @@ export default {
       if (args.userId) return await ExperienceModel.find({ userId: args.userId }).lean();
       return await ExperienceModel.find().lean();
     },
-  experience: async (_: any, { _id }: { _id: string }) => await ExperienceModel.findById(_id).lean(),
+    experience: async (_: any, { _id }: { _id: string }) => {
+      const doc = await ExperienceModel.findById(_id).lean();
+      if (!doc) {
+        throw new GraphQLError('Experience not found', { extensions: { code: 'EXPERIENCE_NOT_FOUND' } });
+      }
+      return doc;
+    },
   },
   Mutation: {
     createExperience: async (_: any, { input }: { input: any }) => {

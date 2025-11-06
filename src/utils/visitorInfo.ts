@@ -1,7 +1,6 @@
 import { Request } from 'express';
 
 const getGeoFromIP = async (ip: string) => {
-  // For local/private IPs, get the real public IP
   if (!ip || ip.includes('127.0.0.1') || ip.includes('::1') || ip.includes('172.') || ip.includes('192.168.') || ip.includes('::ffff:')) {
     try {
       const response = await fetch('http://ip-api.com/json/');
